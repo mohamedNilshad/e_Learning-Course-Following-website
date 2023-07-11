@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+
+       body{
+        background-color:#eee;
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+		
+       }
+
+       .height{
+        height: 100vh;
+       }
+       
+
+
+       .container-cover{
+       		position: absolute;
+			left: 2%;
+       		width: 98%;
+       		height: 2%;
+       		/* background-color: red; */
+       }
+       .cover-image{
+       		width: 70%;
+       		height: 120px;
+       }
+
+       .container-profile-image{
+       		border-radius: 100%;
+  			/*border: 5px solid white;*/
+       		position: absolute;
+       		left: 4.5%;
+       		top: 25%;
+       		width: 5.5%;
+       		height: 15%;
+       		/*background-color: gray;*/
+       		text-align: center;
+
+       }
+
+       .pro-image {
+		  	border-radius: 50%;
+		 	width: 95%;
+			height: 70%;
+  			border: 5px solid white;
+		}
+
+       .container-user-name{
+  			/*border: 5px solid white;*/
+       		position: absolute;
+       		left: 10.5%;
+       		top: 29%;
+       		width: 50%;
+       		height: 5%;
+       		/*background-color: gray;*/
+       		text-align: left;
+       }
+
+       .container-body{
+       		position: absolute;
+       		top: 40%;
+       		left:2%;
+       		width: 97%;
+       		/*height: 90%;*/
+       		/*background-color: green;*/
+       }
+       .card-size{
+       		margin-right: 10px;
+       		margin-bottom: 10px;
+       		padding: 0px;
+       }
+		.btnsave{
+			position: absolute;
+       		top: -60px;
+       		right: 33.5%;
+       		width: 7%;
+		}
+
+		 .container-about{
+       		position: absolute;
+       		top: 10%;
+       		left:72%;
+       		width: 25%;
+       		height: 50%;
+       		/*background-color: green;*/
+       }
+

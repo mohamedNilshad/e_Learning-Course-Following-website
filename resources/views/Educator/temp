@@ -1,0 +1,87 @@
+<!-- Step 2 Content, default hidden on page load. -->
+                <section id="step-2" class="form-step d-none">
+                    <h2 class="font-normal">Course Materials</h2>
+                    <p>Upload Your Course videos and it's materials one by one</p><hr style="height:2px;border:none;color:#333;background-color:#333;"><br>
+                    <!-- Step 2 input fields -->
+                    <!-- for add another video -->
+                @foreach ($course_video as $video_item)
+                    
+                    <div class="input_fields_wrap_video">
+                      <div class="mt-3">
+                        <div class="form-row">
+
+                        <video src="{{$video_item->video_url}}" width="25%"></video>
+                            <div class="form-group col-md-8">
+                            <label for="inputPassword">Upload Video 1</label>
+                            <input type="hidden" name="vID[]" value="{{$video_item->id}}">
+                            <input type="file" class="form-control-file" accept="video/*"  id="inputProfile" name="course_video[]" value="{{$video_item->video_url}}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="inputName">Video Title</label>
+                            <input type="text" class="form-control" id="inputName" name="video_title[]" placeholder="Video Title" value="{{$video_item->video_title}}" required="">
+                        </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                            <label for="description">Video Description</label>
+                            <textarea class="form-control" id="course_description" name="video_description[]" rows="3" required="">{{$video_item->video_description}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                        <img src="{{$video_item->video_thumb_url}}"width="15%">
+
+                            <div class="form-group col-md-8">
+                              <label for="inputPassword">Upload Video Thumbnile</label>
+                                <div class="input_fields_wrap">
+                                    <input type="file" class="form-control-file" accept="image/*"  id="inputProfile" name="video_thumb[]" value="{{$video_item->video_thumb_url}}" style="margin-bottom: 15px;" multiple="">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        @foreach ($document as $docItem) 
+                            @if (($docItem->video_id)==($video_item->id))
+                                <embed src="{{$docItem->doc_url}}" width="220px" height="100px" /> 
+                                <a href="{{url('delete-doc/'.$docItem->id)}}" style="color:#ff0000;">Delete</a>
+                                
+                            @endif
+                        @endforeach
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label for="inputPassword">Upload Documents</label>
+                                <div class="input_fields_wrap">
+                                    <input type="file" class="form-control-file"  id="inputProfile" name="video_document0[]"  style="margin-bottom: 15px;" multiple="">
+                                </div>
+                            </div>
+                        </div> 
+                            <div style="text-align: end;"><a href="{{url('delete-video/'.$video_item->id) }}" style="color:#ff0000;">Delete</a> This Video Section </div>
+                      </div>  
+                    </div>
+                    <hr size="5px" style="border: none; height: 1px; color: #ff0000; background-color: #333;">
+                    <div style="text-align: center">Next Video Break</div>
+                    <hr size="5px" style="border: none; height: 1px; color: #ff0000; background-color: #333;">
+
+                @endforeach
+                
+                    <button class="add_field_button_video">Add Another Video</button>
+
+                    <div class="mt-3">
+                        <button class="button btn-navigate-form-step" type="button" step_number="1">Prev</button>
+                        <button class="button btn-navigate-form-step" type="button" step_number="3">Next</button>
+                    </div>
+                </section>
+
+                  <!-- Step 3 Content, default hidden on page load. -->
+                  <section id="step-3" class="form-step d-none">
+                    <h2 class="font-normal">Update</h2>
+                    <!-- Step 3 input fields -->
+                    <div class="mt-3">
+                       <p>Check All files are correct by clicking Save Button upload Your Course to Course Mate, and after the admin aprovel your course will publish to people
+                       Thank you!</p>
+                    </div>
+                    <div class="mt-3">
+                        <button class="button btn-navigate-form-step" type="button" step_number="2">Prev</button>
+                        <button class="button submit-btn" type="submit" name="saveData">Save</button>
+                    </div>
+                </section>
