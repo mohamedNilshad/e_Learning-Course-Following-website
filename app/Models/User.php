@@ -7,11 +7,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+// use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+
+    protected $table = 'users';
+    public function username()
+    {
+        return 'user_email';
+    }
+
+    // Override the default column name for password
+    public function getAuthPassword()
+    {
+        return $this->user_password;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -44,6 +58,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'user_password' => 'string',
     ];
 
     public function paymentDetails(): HasMany

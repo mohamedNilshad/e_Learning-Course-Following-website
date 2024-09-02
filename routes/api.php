@@ -10,22 +10,39 @@ use App\Http\Controllers\Common\PaymentController;
 use App\Http\Controllers\Learner\UserUpdateController;
 use App\Http\Controllers\Learner\UserProfileController;
 use App\Http\Controllers\Learner\UserForgotPasswordController;
+use Illuminate\Auth\AuthenticationException;
 
 
+//New API
+Route::post('registration', [AuthenticationController::class, 'registration']);
+Route::get('login', [AuthenticationController::class, 'login']);
+Route::post('verify_email', [AuthenticationController::class, 'verifyEmail']);
+Route::post('verify_code', [AuthenticationController::class, 'verifyCode']);
+Route::post('set_new_password', [AuthenticationController::class, 'setNewPassword']);
+
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('get_category', [DisplayAllController::class, 'showCategory']);
+    Route::post('logout', [AuthenticationController::class, 'logout']);
+});
+
+
+
+
+//Old API----------------------------------------------------------------------------------------->
 //Public Routes
-Route::post('register', [AuthenticationController::class, 'register']);
-Route::post('login', [AuthenticationController::class, 'login']);
+// Route::post('register', [AuthenticationController::class, 'register']);
+// Route::post('login', [AuthenticationController::class, 'login']);
 
 
 //Forgot password User
-Route::post('verify_email', [UserForgotPasswordController::class, 'verifyEmail']);
-Route::post('verify_code', [UserForgotPasswordController::class, 'verifyCode']);
-Route::post('set_new_password', [UserForgotPasswordController::class, 'setNewPassword']);
+// Route::post('verify_email', [UserForgotPasswordController::class, 'verifyEmail']);
+// Route::post('verify_code', [UserForgotPasswordController::class, 'verifyCode']);
+// Route::post('set_new_password', [UserForgotPasswordController::class, 'setNewPassword']);
 
 
 //Protactod Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('getCategory', [DisplayAllController::class, 'showCategory']);
+    // Route::get('getCategory', [DisplayAllController::class, 'showCategory']);
     Route::get('getUserCourses/{id}', [DisplayAllController::class, 'getUserCourse']);
 
     Route::get('sortCategory/{id}', [DisplayAllController::class, 'sortCategory']);

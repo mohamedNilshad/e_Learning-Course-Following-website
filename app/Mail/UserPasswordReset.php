@@ -61,6 +61,6 @@ class UserPasswordReset extends Mailable
         return $this->from('coursemate25@gmail.com')
             ->subject('Password Reset Code')
             ->view('Educator.Auth.emails.reset_password')
-            ->with(['otpCode' => $this->resetcode,]);
+            ->with(['otpCode' => $this->resetcode, 'brandName' => 'COURSE MATE', 'year' => date("Y"), ]);
     }
 }
