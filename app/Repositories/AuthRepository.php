@@ -63,8 +63,8 @@ class AuthRepository extends BaseRepository
             }
             $userData = [
                 'id' => $user->id,
-                'user_name' => $user->user_name,
-                'user_email' => $user->user_email,
+                'userName' => $user->user_name,
+                'userEmail' => $user->user_email,
                 'profileImage' => $user->profileImage,
             ];
 

@@ -15,7 +15,7 @@ use Illuminate\Auth\AuthenticationException;
 
 //New API
 Route::post('registration', [AuthenticationController::class, 'registration']);
-Route::get('login', [AuthenticationController::class, 'login']);
+Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('verify_email', [AuthenticationController::class, 'verifyEmail']);
 Route::post('verify_code', [AuthenticationController::class, 'verifyCode']);
 Route::post('set_new_password', [AuthenticationController::class, 'setNewPassword']);

@@ -77,17 +77,17 @@ class AuthenticationController extends ApiBaseController
     }
 
     public function logout(Request $request) {
-        $input = $request->all();
+        // $input = $request->all();
 
-        $validators = Validator::make($input, [
-            'token' => 'required'
-        ]);
+        // $validators = Validator::make($input, [
+        //     'token' => 'required'
+        // ]);
 
-        if ($validators->fails()) {
-            return $this->sendError('', $validators->messages(), 400);
-        }
+        // if ($validators->fails()) {
+        //     return $this->sendError('', $validators->messages(), 400);
+        // }
 
-        $playerID = isset($input['token']) ? $input['token'] : '';
+        // $playerID = isset($input['token']) ? $input['token'] : '';
 
         try {
 
@@ -117,15 +117,15 @@ class AuthenticationController extends ApiBaseController
 
         $result = $this->authRepository->verifyUser($request->email);
     
-        if ($result = 'success') {
+        if ($result == 'success') {
             return $this->sendSuccess("We sended Reset Code to ".$request->email);
         }
 
-        if($result = 'error_1') {
+        if($result == 'error_1') {
             return $this->sendError(null, "Error in sending Code! try again!", 404);
         }
 
-        if($result = 'error_2') {
+        if($result == 'error_2') {
             return $this->sendError(null, "Email Dosen't Exist", 404);
         }
     }
