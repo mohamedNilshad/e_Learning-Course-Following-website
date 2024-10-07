@@ -69,47 +69,6 @@ class DisplayAllController extends Controller
         return response($response, $code);
     }
 
-
-    public function showCourses()
-    {
-        $course = CourseDetail::where('publishCourse', '=', 1)->where('deleteCourse', '=', 0)->get();
-        // $token = $user->createToken('courseMate')->plainTextToken;
-
-        if ($course) {
-            $pubPath = asset(''); //public_path();
-            return $this->sendResponse(null, $course, $pubPath);
-        } else {
-            return $this->sendError(null, "Courses not found!", 404);
-        }
-
-    }
-
-    public function showCategory()
-    {
-        $courseCat = CourseTopic::where('deleteTopic', '=', 0)->get();
-        // $token = $user->createToken('courseMate')->plainTextToken;
-
-        if ($courseCat) {
-            return $this->sendResponse(null, $courseCat);
-        } else {
-            return $this->sendError(null, "Categories not found!", 404);
-        }
-
-    }
-
-    public function sortCategory($id)
-    {
-        $course = CourseDetail::where('publishCourse', '=', 1)->where('topic_id', '=', $id)->get();
-        // $token = $user->createToken('courseMate')->plainTextToken;
-
-        if ($course) {
-            return $this->sendResponse(null, $course);
-        } else {
-            return $this->sendError(null, "Courses not found!", 404);
-        }
-
-    }
-
     public function getCourse($id)
     {
 

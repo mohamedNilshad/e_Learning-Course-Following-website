@@ -70,7 +70,36 @@ class CourseDetail extends Model
     {
         return $this->hasMany(NotifyEdu::class,'courseId');
     }
+
+
+    public function getAllCateories(){
+        return CourseTopic::where('deleteTopic', '=', 0)
+        ->select('id', 'topic')
+        ->get();
+    }
+
+    public function getSortByCategory($id){
+        return CourseDetail::where('publishCourse', '=', 1)
+        ->where('topic_id', '=', $id)
+        ->get();
+    }
+
+    public function getUserCourse($uid){
+        return 'Future Implementation';
+    //     $course = UserPaymentDetail::join('course_details', 'user_payment_details.course_id', '=', 'course_details.id')
+    //     ->where('user_payment_details.user_id', '=', $request->id)
+    //     ->orderBy('user_payment_details.created_at', 'desc')
+    //     ->distinct('user_payment_details.course_id')
+    //     ->get(['course_details.*']);
+
+    // return ($course[2]->id);
+    }
     
+    public function getAllCourses(){
+        return CourseDetail::where('publishCourse', '=', 1)
+        ->where('deleteCourse', '=', 0)
+        ->get();
+    }
 
     
 }

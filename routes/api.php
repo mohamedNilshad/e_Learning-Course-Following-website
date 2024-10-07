@@ -1,16 +1,12 @@
 <?php
 
+use App\Http\Controllers\API\CourseController;
 use App\Http\Controllers\Learner\DisplayAllController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\API\AuthenticationController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Common\PaymentController;
 use App\Http\Controllers\Learner\UserUpdateController;
-use App\Http\Controllers\Learner\UserProfileController;
-use App\Http\Controllers\Learner\UserForgotPasswordController;
-use Illuminate\Auth\AuthenticationException;
 
 
 //New API
@@ -21,8 +17,15 @@ Route::post('verify_code', [AuthenticationController::class, 'verifyCode']);
 Route::post('set_new_password', [AuthenticationController::class, 'setNewPassword']);
 
 Route::group(['middleware' => 'auth:api'], function() {
-    Route::get('get_category', [DisplayAllController::class, 'showCategory']);
     Route::post('logout', [AuthenticationController::class, 'logout']);
+    
+    ///category, course
+    Route::get('get_category', [CourseController::class, 'getAllCategories']);
+    Route::get('sort_by_category/{id}', [CourseController::class, 'sortByCategory']);
+    Route::get('get_user_courses/{id}', [CourseController::class, 'getUserCourse']);
+    Route::get('get_all_courses', [CourseController::class, 'getAllCourses']);
+    
+
 });
 
 
@@ -43,10 +46,10 @@ Route::group(['middleware' => 'auth:api'], function() {
 //Protactod Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::get('getCategory', [DisplayAllController::class, 'showCategory']);
-    Route::get('getUserCourses/{id}', [DisplayAllController::class, 'getUserCourse']);
+    // Route::get('getUserCourses/{id}', [DisplayAllController::class, 'getUserCourse']);
 
-    Route::get('sortCategory/{id}', [DisplayAllController::class, 'sortCategory']);
-    Route::get('allCourses', [DisplayAllController::class, 'showCourses']);
+    // Route::get('sortCategory/{id}', [DisplayAllController::class, 'sortCategory']);
+    // Route::get('allCourses', [DisplayAllController::class, 'showCourses']);
 
 
     Route::get('getAllContents/{id}', [DisplayAllController::class, 'getContents']);

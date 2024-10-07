@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\ApiBaseController;
-use App\Models\User;
 use App\Repositories\AuthRepository;
-
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
@@ -72,22 +70,9 @@ class AuthenticationController extends ApiBaseController
         }
 
         return $this->sendResponse($result, 'Login Successfull!');
-        // return $this->sendResponse($token, Auth::user(), 'Loged In Successfull!');
-
     }
 
     public function logout(Request $request) {
-        // $input = $request->all();
-
-        // $validators = Validator::make($input, [
-        //     'token' => 'required'
-        // ]);
-
-        // if ($validators->fails()) {
-        //     return $this->sendError('', $validators->messages(), 400);
-        // }
-
-        // $playerID = isset($input['token']) ? $input['token'] : '';
 
         try {
 

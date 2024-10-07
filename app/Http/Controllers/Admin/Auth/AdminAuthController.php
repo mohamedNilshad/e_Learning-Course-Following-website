@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Log;
 
 class AdminAuthController extends Controller
 {
@@ -21,6 +22,7 @@ class AdminAuthController extends Controller
 
         $admin = Admin::where('admin_email', '=', $request->email)->first();
         if ($admin) {
+            
             if (Hash::check($request->password, $admin->admin_password)) {
                 if ($admin->block_admin == 0) {
                     //return back()->with('success', 'You have Registered Successfuly');
