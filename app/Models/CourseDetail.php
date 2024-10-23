@@ -45,20 +45,23 @@ class CourseDetail extends Model
         return $this->hasMany(CourseReview::class);
     }
 
-    public function users(){
+    public function users()
+    {
         return $this->belongsToMany(User::class);
     }
-    public function admins(){
+    public function admins()
+    {
         return $this->belongsToMany(Admin::class);
     }
 
-    public function total_payment(){
-        return $this->hasOne(TotalPayment::class,'course_id');
+    public function total_payment()
+    {
+        return $this->hasOne(TotalPayment::class, 'course_id');
     }
 
     public function paymentDetails(): HasMany
     {
-        return $this->hasMany(PaymentDetail::class,'course_id');
+        return $this->hasMany(PaymentDetail::class, 'course_id');
     }
 
     // public function notifyCourses(): HasMany
@@ -68,38 +71,85 @@ class CourseDetail extends Model
 
     public function notifyEduCourses(): HasMany
     {
-        return $this->hasMany(NotifyEdu::class,'courseId');
+        return $this->hasMany(NotifyEdu::class, 'courseId');
     }
 
 
-    public function getAllCateories(){
+    public function getAllCateories()
+    {
         return CourseTopic::where('deleteTopic', '=', 0)
-        ->select('id', 'topic')
-        ->get();
+            ->select('id', 'topic')
+            ->get();
     }
 
-    public function getSortByCategory($id){
-        return CourseDetail::where('publishCourse', '=', 1)
-        ->where('topic_id', '=', $id)
-        ->get();
+    public function getSortByCategory($id)
+    {
+        return CourseDetail::with(['educator:id,educatorName,educatorEmail,educatorBio,educatorProfileImage,educatorCoverImage,created_at'])
+            ->where('topic_id', '=', $id)
+            ->where('publishCourse', '=', 1)
+            ->where('deleteCourse', '=', 0)
+            ->get();
     }
 
-    public function getUserCourse($uid){
+    public function getUserCourse($uid)
+    {
         return 'Future Implementation';
-    //     $course = UserPaymentDetail::join('course_details', 'user_payment_details.course_id', '=', 'course_details.id')
-    //     ->where('user_payment_details.user_id', '=', $request->id)
-    //     ->orderBy('user_payment_details.created_at', 'desc')
-    //     ->distinct('user_payment_details.course_id')
-    //     ->get(['course_details.*']);
+        //     $course = UserPaymentDetail::join('course_details', 'user_payment_details.course_id', '=', 'course_details.id')
+        //     ->where('user_payment_details.user_id', '=', $request->id)
+        //     ->orderBy('user_payment_details.created_at', 'desc')
+        //     ->distinct('user_payment_details.course_id')
+        //     ->get(['course_details.*']);
 
-    // return ($course[2]->id);
-    }
-    
-    public function getAllCourses(){
-        return CourseDetail::where('publishCourse', '=', 1)
-        ->where('deleteCourse', '=', 0)
-        ->get();
+        // return ($course[2]->id);
     }
 
-    
+    public function getAllCourses()
+    {
+        return CourseDetail::with(['educator:id,educatorName,educatorEmail,educatorBio,educatorProfileImage,educatorCoverImage,created_at'])
+            ->where('publishCourse', '=', 1)
+            ->where('deleteCourse', '=', 0)
+            ->get();
+    }
+
+    public function getCourse($courseId)
+    {
+        return CourseDetail::with(['educator:id,educatorName,educatorEmail,educatorBio,educatorProfileImage,educatorCoverImage,created_at'])
+            ->where('id', '=', $courseId)
+            ->first();
+    }
+
+    public function getCourseContent($courseId)
+    {
+        $course = CourseDetail::with(['educator' => function($query) {
+                $query->select('id', 'educatorName', 'educatorProfileImage');
+            }])
+        ->where('id', $courseId)
+        ->select('id', 'courseName', 'courseDescription', 'coursePrice', 'courseThumbnile', 'courseViews', 'uploadDate', 'educator_id') // Don't forget the foreign key 'educator_id'
+        ->first();
+
+        $course->video_list = VideoStore::where('course_id', '=', $courseId)
+        ->orderBy('video_order', 'asc')
+        ->get(['id', 'video_url', 'video_title', 'video_thumb_url', 'video_description', 'video_order', 'created_at', 'updated_at']);
+
+        return $course;
+    }
+
+    public function getCourseContentDraft($courseId)
+    {
+        return VideoStore::where('course_id', '=', $courseId)
+            ->orderBy('video_order', 'asc')
+            ->get(['id', 'video_title', 'video_thumb_url', 'video_description', 'video_order', 'created_at', 'updated_at']);
+    }
+
+    public function setFavourite($courseId, $userId, $status)
+    {
+        return FavoriteCourse::updateOrCreate(['userId' => $userId,'courseId' => $courseId,], ['like' => $status]);
+    }
+    public function getFavourite($courseId, $userId)
+    {
+        return FavoriteCourse::where('userId', $userId)
+        ->where('courseId', $courseId)
+        ->where('like', 1)
+        ->exists();
+    }
 }

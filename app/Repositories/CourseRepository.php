@@ -56,4 +56,28 @@ class CourseRepository extends BaseRepository
     {
         return $this->model->getAllCourses();
     }
+    
+    public function getCourse($courseId)
+    {
+        return $this->model->getCourse($courseId);
+    }
+
+    public function getCourseContent($courseId)
+    {
+        return $this->model->getCourseContent($courseId);
+    }
+
+    public function getCourseContentDraft($courseId)
+    {
+        return $this->model->getCourseContentDraft($courseId);
+    }
+
+    public function setFavourite($courseId, $userId, $status)
+    {
+        return $this->model->setFavourite($courseId, $userId, $status);
+    }
+    public function getFavourite($courseId, $userId)
+    {
+        return $this->model->getFavourite($courseId, $userId);
+    }
 }

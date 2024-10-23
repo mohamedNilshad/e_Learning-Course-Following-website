@@ -127,6 +127,7 @@ Route::put('/update-new-password', [updateController::class, 'updatePassword'])-
 
 // educator create routs
 Route::post('/create-new', [EducatorCreateController::class, 'createNew'])->name('create-new');
+Route::post('/create_new_course', [EducatorCreateController::class, 'createCourse'])->name('create-new-course');
 Route::post('/review-replay', [EducatorCreateController::class, 'replayReview'])->name('review-replay')->middleware('isLogedIn');
 Route::post('/add-new-video', [EducatorCreateController::class, 'addVideo'])->name('add-new-video')->middleware('isLogedIn');
 

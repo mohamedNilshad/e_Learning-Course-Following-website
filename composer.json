@@ -8,6 +8,8 @@
         "php": "^8.0.2",
         "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.5",
+        "james-heinrich/getid3": "^1.9",
+        "kreait/firebase-php": "^7.15",
         "laravel/framework": "^9.19",
         "laravel/passport": "^12.3",
         "laravel/sanctum": "^3.2",

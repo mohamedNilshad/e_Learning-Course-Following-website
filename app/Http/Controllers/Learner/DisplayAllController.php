@@ -12,6 +12,7 @@ use App\Models\VideoStore;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class DisplayAllController extends Controller
 {
@@ -182,7 +183,7 @@ class DisplayAllController extends Controller
 
         if ($course) {
             $pubPath = asset('');
-            return $this->sendResponse(null, $course,$pubPath);
+            return $this->sendResponse(null, $course, $pubPath);
         } else {
             return $this->sendError(null, "Not found", 404);
         }
@@ -191,14 +192,14 @@ class DisplayAllController extends Controller
     public function populerCourse(Request $request)
     {
         $course = CourseDetail::join('course_topics', 'course_details.topic_id', '=', 'course_topics.id')
-        ->inRandomOrder()
-        ->take(4)
-        ->get(['course_details.*','course_topics.']);
+            ->inRandomOrder()
+            ->take(4)
+            ->get(['course_details.*', 'course_topics.']);
 
 
         if ($course) {
             $pubPath = asset('');
-            return $this->sendResponse(null, $course,$pubPath);
+            return $this->sendResponse(null, $course, $pubPath);
         } else {
             return $this->sendError(null, "Not found", 404);
         }
@@ -207,3 +208,24 @@ class DisplayAllController extends Controller
 
 
 }
+
+/*
+GetContents(
+    [
+        Video(
+            1, 
+            video/course/17282189640.mp4, 
+            intro, 
+            https://storage.googleapis.com/course-mate-64355.appspot.com/video_thumbnail/17288147410.png, 
+            intro
+        ), 
+        Video(
+            2, 
+            video/course/17282189641.mp4, 
+            Variables, 
+            https://storage.googleapis.com/course-mate-64355.appspot.com/video_thumbnail/17288147462.png, 
+            Variables
+        )
+    ], 
+    []
+)

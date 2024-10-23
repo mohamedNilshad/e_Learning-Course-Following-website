@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Educator\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Services\FirebaseService;
 use App\Models\CourseDetail;
 use App\Models\DocStore;
 use App\Models\ReviewReplay;
@@ -13,6 +14,54 @@ use Illuminate\Support\Facades\DB;
 
 class EducatorCreateController extends Controller
 {
+    protected $firebaseService;
+
+    public function __construct(FirebaseService $firebaseService){
+        $this->firebaseService = $firebaseService;
+    }
+
+    private function uploadThumbnail($request){
+        try {
+            
+            $newFileName = strtolower(str_replace(' ', '_', $request->course_title));
+
+            $file = $request->file('course_thumbnile');
+            $filePath = $file->getRealPath();
+            $fileName = 'course_thumbnail/'.$newFileName.'.'.$file->getClientOriginalExtension();
+            $url = $this->firebaseService->uploadFile($filePath, $fileName);
+
+            if($url != null){
+               return $url;
+            }
+            return false;
+        } catch (\Throwable $th) {
+            return back()->with('fail', 'Error'.$th->getMessage());
+        }
+        
+
+    }
+
+    private function uploadFile($newFileName, $file, $file_location){
+        try {
+            
+            //$newFileName = strtolower(str_replace(' ', '_', $request->course_title));
+
+            // $file = $request->file('course_thumbnile');
+            $filePath = $file->getRealPath();
+            $fileName = $file_location.$newFileName;
+            $url = $this->firebaseService->uploadFile($filePath, $fileName);
+
+            if($url != null){
+               return $url;
+            }
+            return false;
+        } catch (\Throwable $th) {
+            return back()->with('fail', 'Error'.$th->getMessage());
+        }
+        
+
+    }
+
     public function createNew(Request $request){
         
         try {
@@ -29,15 +78,23 @@ class EducatorCreateController extends Controller
 
             $courseDetails->uploadDate = date('Y-m-d');
 
-            //save thumbnile
+            // $thumbURL = $this->uploadThumbnail($request);
             $imageThumb = $request->file('course_thumbnile');
             $thumbImageURL = $thumInput['thumbimagename'] = time() . '.' . $imageThumb->getClientOriginalExtension();
-            $de = public_path('/images/thumb');
-            $imageThumb->move($de, $thumInput['thumbimagename']);
-            $thumbURL = 'images/thumb/' . $thumbImageURL;
+            $thumbURL = $this->uploadFile($thumbImageURL, $imageThumb, 'course_thumbnail/');
+
+        
+            //save thumbnile
+            // $imageThumb = $request->file('course_thumbnile');
+            // $thumbImageURL = $thumInput['thumbimagename'] = time() . '.' . $imageThumb->getClientOriginalExtension();
+            // $de = public_path('/images/thumb');
+            // $imageThumb->move($de, $thumInput['thumbimagename']);
+            // $thumbURL = 'images/thumb/' . $thumbImageURL;
             // $thumbURL = public_path('storage/images/thumb/'.$thumbImageURL.'');
             // $thumbURL = (public_path("storage/images/thumb/".$thumbImageURL));
             //set thumb on table
+
+
             $courseDetails->courseThumbnile = $thumbURL;
             $courseResponse = $courseDetails->save();
 
@@ -55,16 +112,20 @@ class EducatorCreateController extends Controller
                     for ($i=0; $i < count($videoCourse); $i++) { 
                         $videoDetails = new VideoStore();
                         //save video
-                        $courseVideoUrl = $videoInput['videoname'] = time() . $i. '.' . $videoCourse[$i]->getClientOriginalExtension();
-                        $videoDir = public_path('/video/course');
-                        $videoCourse[$i]->move($videoDir, $videoInput['videoname']);
-                        $videoURL = 'video/course/' . $courseVideoUrl;
+                         $courseVideoUrl = $videoInput['videoname'] = time() . $i. '.' . $videoCourse[$i]->getClientOriginalExtension();
+                        // $videoDir = public_path('/video/course');
+                        // $videoCourse[$i]->move($videoDir, $videoInput['videoname']);
+                        // $videoURL = 'video/course/' . $courseVideoUrl;
 
+                        $videoURL = $this->uploadFile($courseVideoUrl, $videoCourse[$i], 'course_videos/');
+                        
                         //save video thumb
-                        $VideoThumbUrl = $videoThumbInput['vdothumbname'] = time() . $i+$i. '.' . $videoThumb[$i]->getClientOriginalExtension();
-                        $videoThumbDir = public_path('/images/videoThumb');
-                        $videoThumb[$i]->move($videoThumbDir, $videoThumbInput['vdothumbname']);
-                        $videoThumbURL = 'images/videoThumb/' . $VideoThumbUrl;
+                         $VideoThumbUrl = $videoThumbInput['vdothumbname'] = time() . $i+$i. '.' . $videoThumb[$i]->getClientOriginalExtension();
+                        // $videoThumbDir = public_path('/images/videoThumb');
+                        // $videoThumb[$i]->move($videoThumbDir, $videoThumbInput['vdothumbname']);
+                        // $videoThumbURL = 'images/videoThumb/' . $VideoThumbUrl;
+
+                        $videoThumbURL = $this->uploadFile($VideoThumbUrl, $videoThumb[$i], 'video_thumbnail/');
 
                         //save video table
                         $videoDetails->course_id = $courseDetails->id;

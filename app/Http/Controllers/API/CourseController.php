@@ -56,19 +56,78 @@ class CourseController extends ApiBaseController
     {
         try {
             $result = $this->courseRepository->getAllCourses();
+        
+            $result->publicPath = asset('');
             return $this->sendResponse($result, 'Courses were fetched successfully.');
 
         } catch (\Throwable $th) {
             return $this->sendError($th, 'Error in fetching courses !');
         }
-
-        if ($course) {
-            $pubPath = asset(''); //public_path();
-            return $this->sendResponse(null, $course, $pubPath);
-        } else {
-            return $this->sendError(null, "Courses not found!", 404);
-        }
-
     }
+
+    public function getCourse($courseId)
+    {
+        try {
+            $result = $this->courseRepository->getCourse($courseId);
+            return $this->sendResponse($result, 'Course was fetched successfully.');
+
+        } catch (\Throwable $th) {
+            return $this->sendError($th, 'Error in fetching courses !');
+        }
+    }
+
+    public function getCourseContentDraft($courseId)
+    {
+        try {
+            $result = $this->courseRepository->getCourseContentDraft($courseId);
+            return $this->sendResponse($result, 'Course Contents ware fetched successfully.');
+
+        } catch (\Throwable $th) {
+            return $this->sendError($th, 'Error in fetching course contents !');
+        }
+    }
+
+    public function getCourseContent($courseId)
+    {
+        try {
+            $result = $this->courseRepository->getCourseContent($courseId);
+            return $this->sendResponse($result, 'Course was fetched successfully.');
+
+        } catch (\Throwable $th) {
+            return $this->sendError($th, 'Error in fetching courses !');
+        }
+    }
+
+    public function setFavourite(Request $request)
+    {
+        try {
+            $result = $this->courseRepository->setFavourite($request->courseId, $request->userId, $request->status);
+            if($result){
+                $value = false;
+                if($result->like == 1){
+                    $value = true;
+                }
+                return $this->sendResponse($value, 'Favourite was fetched successfully.');
+            }
+            return $this->sendError($result, 'Error in updating favourite !');
+            
+        } catch (\Throwable $th) {
+            return $this->sendError($th, 'Error in updating favourite !');
+        }
+    }
+
+    public function getFavourite(Request $request)
+    {
+        try {
+            $result = $this->courseRepository->getFavourite($request->courseId, $request->userId);
+
+            return $this->sendResponse($result, 'Favourite was fetched successfully.');
+            
+        } catch (\Throwable $th) {
+            return $this->sendError($th, 'Error in fatching favourite !');
+        }
+    }
+
+
 
 }
